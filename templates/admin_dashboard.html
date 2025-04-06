@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Thrifty{% endblock %}
+
+{% block page_content %}
+<div class="container">
+    <h2 class="mb-4">Admin Dashboard</h2>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-people fs-1 text-primary me-3"></i>
+                        <div>
+                            <h3 class="card-title">Customers</h3>
+                            <p class="display-4 mb-0">{{ customer_count }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('customers') }}" class="btn btn-outline-primary mt-3">View Customers</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-shop fs-1 text-primary me-3"></i>
+                        <div>
+                            <h3 class="card-title">Sellers</h3>
+                            <p class="display-4 mb-0">{{ seller_count }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('sellers') }}" class="btn btn-outline-primary mt-3">View Sellers</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-box fs-1 text-primary me-3"></i>
+                        <div>
+                            <h3 class="card-title">Products</h3>
+                            <p class="display-4 mb-0">{{ product_count }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('products') }}" class="btn btn-outline-primary mt-3">View Products</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-cart fs-1 text-primary me-3"></i>
+                        <div>
+                            <h3 class="card-title">Orders</h3>
+                            <p class="display-4 mb-0">{{ order_count }}</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('manage_orders') }}" class="btn btn-outline-primary mt-3">View Orders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h3 class="card-title mb-4">Recent Orders</h3>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in recent_orders %}
+                        <tr>
+                            <td>{{ order.order_id }}</td>
+                            <td>{{ order.customer_name }}</td>
+                            <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'success' if order.status == 'completed' else 'warning' }}">
+                                    {{ order.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('view_order', order_id=order.order_id) }}" class="btn btn-sm btn-info">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
